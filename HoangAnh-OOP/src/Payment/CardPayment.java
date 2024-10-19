@@ -18,8 +18,9 @@ public class CardPayment implements PayMent{
             System.out.println("So tien can thanh toan:" + priceItem);
             if(amount > priceItem){
                 balance = amount - priceItem;
-            }else balance = 0;
-            bill(amount,priceItem);
+                System.out.println("Thanh toan thanh cong!");
+                bill(amount,priceItem);
+            }else System.out.println("Thanh toan khong thanh cong");
         }else{
             System.out.println("so the khong hop le!");
             return;
@@ -27,30 +28,31 @@ public class CardPayment implements PayMent{
     }
 
     public double getBalance(){
-        return  balance = 0;
+        return  balance;
     }
 
     @Override
     public void refund(double amount) {
-        System.out.println("Hoan tra khong can thiet!");
+        if (balance > 0) {
+            System.out.println("Hoàn trả: " + balance);
+        } else {
+            System.out.println("Không có số dư để hoàn trả.");
+        }
     }
 
     @Override
     public boolean isValid(String details) {
-       for(int i = 0; i < details.length();i++){
-           if(details.charAt(i) < 0  && details.charAt(i) > 9) return false;
-           return true;
+       for(char x : details.toCharArray()){
+           if(!Character.isDigit(x)) return false;
        }
        if(details.length() != 16) return false;
        return true;
     }
 
-    @Override
+
     public void bill(double amount,double priceItem) {
-        System.out.println("THANH TOAN BANG THE NGAN HANG");
-        System.out.println("-------------Hóa đơn bán hàng--------------");
-        System.out.println("Gía sản phẩm: " + priceItem);
-        System.out.println("Tiền khách đưa: " + amount);
-        System.out.println("Tiền trả lại: " + getBalance());
+        Bill.printBill("Thẻ ngân hàng");
+        Bill.printBillDetails(priceItem, amount, getBalance());
+        Bill.printBillFooter();
     }
 }

@@ -5,16 +5,14 @@ public class CashPayment implements PayMent{
     @Override
     public void pay(double amount,double priceItem) {
         System.out.println("so tien can thanh toan: " + priceItem);
-        if(amount > priceItem){
-            System.out.println("so tien du: ");
+        if(amount >= priceItem){
             balance = amount - priceItem;
-        }else if(amount == priceItem){
-            balance = 0;
-        }else {
+            System.out.println("Thanh toán thành công! số dư: " + getBalance());
+            bill(amount,priceItem);
+        } else {
             System.out.println("thanh toan khong thanh cong");
             return;
         }
-       bill(amount,priceItem);
     }
 
     public double getBalance(){
@@ -22,7 +20,11 @@ public class CashPayment implements PayMent{
     };
     @Override
     public void refund(double amount) {
-        System.out.print("so tien thoi lai: " + getBalance());
+        if (balance > 0) {
+            System.out.println("Số tiền thối lại :  " + balance);
+        } else {
+            System.out.println("Không có số dư");
+        }
     }
 
     @Override
@@ -30,13 +32,10 @@ public class CashPayment implements PayMent{
         return true;
     }
 
-    @Override
+
     public void bill(double amount,double priceItem) {
-        System.out.println("-------------Hóa đơn bán hàng--------------");
-        System.out.println("Gía sản phẩm: " + priceItem);
-        System.out.println("Tiền khách đưa: " + amount);
-        if(balance > 0){
-            System.out.println("Tiền trả lại: " + getBalance());
-        }else System.out.println("Tiền trả lại: 0");
+        Bill.printBill("Tiền Mặt");
+        Bill.printBillDetails(priceItem, amount, getBalance());
+        Bill.printBillFooter();
     }
 }
